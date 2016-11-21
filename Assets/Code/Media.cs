@@ -10,8 +10,11 @@ public class Media : MonoBehaviour {
 	private bool Midiendo = false;
 	public bool primeraMedicion = true;
 
-	private int Margen = 50;
-	private int Intervalo = 10;
+	private int MargenAc = 1000;
+	private int MargenGc = 100;
+
+	private int Calibrando = 50;
+	private int Intervalo = 2;
 
 
 	private int origTotalAcX = 0;
@@ -38,19 +41,50 @@ public class Media : MonoBehaviour {
 	private int mediaTotalGcY = 0;
 	private int mediaTotalGcZ = 0;
 
+	//Variables
+	public int GcX;
+	public int GcY;
+	public int GcZ;
+
+	public int AcX;
+	public int AcY;
+	public int AcZ;
+
+	//Rotacion
+	private float AngX;
+	private float AngY;
+	private float AngZ;
+
+	//Posicion
+	private float PosX;
+	private float PosY;
+	private float PosZ;
 	// Use this for initialization
 	void Start () {
-		
+		AngX = cuboRot.rotation.eulerAngles.x;
+		AngY = cuboRot.rotation.eulerAngles.y;
+		AngZ = cuboRot.rotation.eulerAngles.z;
+
+		PosX = cuboRot.position.x;
+		PosY = cuboRot.position.y;
+		PosZ = cuboRot.position.z;
 	}
 
 
 	
 	// Update is called once per frame
 	void Update () {
-		if (!ArduinoInput.Datos [0].Equals (0) && !Midiendo) {
-			Midiendo = true;
-		}
-		if(Midiendo){
+		
+		AcX = Convert.ToInt16(ArduinoInput.Datos [3]);
+		AcY = Convert.ToInt16(ArduinoInput.Datos [4]);
+		AcZ = Convert.ToInt16(ArduinoInput.Datos [5]);
+
+		GcX = Convert.ToInt16(ArduinoInput.Datos [0]);
+		GcY = Convert.ToInt16(ArduinoInput.Datos [1]);
+		GcZ = Convert.ToInt16(ArduinoInput.Datos [2]);
+
+
+
 		sumTotalAcX += Convert.ToInt16(ArduinoInput.Datos [3]);
 		sumTotalAcY += Convert.ToInt16(ArduinoInput.Datos [4]);
 		sumTotalAcZ += Convert.ToInt16(ArduinoInput.Datos [5]);
@@ -67,7 +101,7 @@ public class Media : MonoBehaviour {
 
 
 
-			if (cont == Intervalo && primeraMedicion) {
+		if (cont == Calibrando && primeraMedicion) {
 				
 				primeraMedicion = false;
 				origTotalAcX = sumTotalAcX / cont;
@@ -92,14 +126,14 @@ public class Media : MonoBehaviour {
 				sumTotalGcZ = 0;
 
 
-			//	Debug.Log ("Original: " + origTotalAcX + ", " + origTotalAcY + ", " + origTotalAcZ + ", " + origTotalGcX + ", " + origTotalGcY + ", " + origTotalGcZ);
+				Debug.Log ("Original: " + origTotalAcX + ", " + origTotalAcY + ", " + origTotalAcZ + ", " + origTotalGcX + ", " + origTotalGcY + ", " + origTotalGcZ);
 			}
 
 
 
 
 			if (cont == Intervalo  && !primeraMedicion) {
-				primeraMedicion = true;
+
 			mediaTotalAcX = sumTotalAcX / cont;
 			mediaTotalAcY = sumTotalAcY / cont;
 			mediaTotalAcZ = sumTotalAcZ / cont;
@@ -108,15 +142,36 @@ public class Media : MonoBehaviour {
 			mediaTotalGcY = sumTotalGcY / cont;
 			mediaTotalGcZ = sumTotalGcZ / cont;
 
-				if ((origTotalAcX - mediaTotalAcX) > Margen || (origTotalAcY - mediaTotalAcY) > Margen ||  (origTotalAcZ - mediaTotalAcZ) > Margen
-					||  (origTotalGcX - mediaTotalGcX) > Margen ||  (origTotalGcY - mediaTotalGcY) > Margen ||  (origTotalGcZ - mediaTotalGcZ) > Margen) {
-					float cuboX = cuboRot.position.x;
-					float nuevaX = cuboX + (origTotalGcX-mediaTotalGcX)/ 200;
+
+			if (Math.Abs(mediaTotalGcX-origTotalGcX) > MargenGc )
+				AngX= (AngX + (mediaTotalGcX-origTotalGcX)*Time.deltaTime*Time.deltaTime*Mathf.Rad2Deg)*0.3f;
+				
+			if(Math.Abs(mediaTotalGcY-origTotalGcY) > MargenGc)
+				AngY= (AngY + (mediaTotalGcY-origTotalGcY)*Time.deltaTime*Time.deltaTime*Mathf.Rad2Deg)*0.3f;
+				
+			if(Math.Abs(mediaTotalGcZ-origTotalGcZ) > MargenGc)
+				AngZ=( AngZ + (mediaTotalGcZ-origTotalGcZ)*Time.deltaTime*Time.deltaTime*Mathf.Rad2Deg)*0.3f;
+				
+				cuboRot.rotation = Quaternion.Euler(AngX, AngY, AngZ);
+
+
+			/*if (Math.Abs(mediaTotalAcX-origTotalAcX)> MargenAc)
+				PosX = PosX + (mediaTotalAcX-origTotalAcX)*Time.deltaTime*Time.deltaTime;
+
+			if(Math.Abs(mediaTotalAcY-origTotalAcY) > MargenAc)
+				PosY = PosY + (mediaTotalAcY-origTotalAcY)*Time.deltaTime*Time.deltaTime;
+
+			if( Math.Abs(mediaTotalAcZ-origTotalAcZ) > MargenAc)
+				PosZ = PosZ + (mediaTotalAcZ-origTotalAcZ)*Time.deltaTime*Time.deltaTime;
+			
 					//Debug.Log ("Cambios: "+ cuboX + " " + nuevaX);
-					cuboRot.position= new Vector3(nuevaX,0,0);
+				cuboRot.position= new Vector3(PosX,PosY,PosZ);*/
+
+				//Debug.Log ("Cambiando: "+ Time.deltaTime);
 					//cuboRot.eulerAngles = new Vector3 (origTotalAcX - mediaTotalGcX, 0, 0);
-				}
-				Debug.Log ("MEDIA: " + (origTotalAcX - mediaTotalAcX) + ", " + (origTotalAcY - mediaTotalAcY) + ", " + (origTotalAcZ - mediaTotalAcZ) + ", " + (origTotalGcX-mediaTotalGcX) + ", " + (origTotalGcY-mediaTotalGcY) + ", " + (origTotalGcZ-mediaTotalGcZ));
+
+
+			Debug.Log ("Variación: " + (mediaTotalAcX-origTotalAcX) + ", " + (mediaTotalAcY-origTotalAcY) + ", " + (mediaTotalAcZ-origTotalAcZ) + ", " + (mediaTotalGcX-origTotalGcX) + ", " + (mediaTotalGcY-origTotalGcY) + ", " + (mediaTotalGcZ-origTotalGcZ));
 
 
 		//	Debug.Log ("Contador: " + cont);
@@ -133,6 +188,5 @@ public class Media : MonoBehaviour {
 
 				//Debug.Log ("MEDIA: " + (origTotalAcX-mediaTotalAcX) + ", " + (origTotalAcY-mediaTotalAcY) + ", " + (origTotalAcZ-mediaTotalAcZ) + ", " + mediaTotalGcX + ", " + mediaTotalGcY + ", " + mediaTotalGcZ);
 			}
-		}
 	}
 }
