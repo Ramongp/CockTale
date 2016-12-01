@@ -111,6 +111,7 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Vertido Izq");
+		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (1);
 		agitando = false;
 	}
 
@@ -120,6 +121,7 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Vertido Der");
+		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (0);
 		agitando = false;
 	}
 
@@ -128,6 +130,7 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Tomado");
+		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (2);
 		tomando = false;
 	}
 
