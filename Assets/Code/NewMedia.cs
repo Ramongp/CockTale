@@ -4,9 +4,13 @@ using System.Globalization;
 using System;
 
 public class NewMedia : MonoBehaviour {
+	//Booleano entre fases
+	public int Fase;
+
+	//Fase1 variables
+	public static bool Izq=false,Der=false;
 
 	//Objetos y variables
-	public Transform cubo;
 
 	private bool agitando = false;
 	private bool tomando = false;
@@ -89,16 +93,19 @@ public class NewMedia : MonoBehaviour {
 
 		if (GcY > 32700 && !tomando && !agitando) {
 			Debug.Log ("TOMANDO");
+			if (Fase.Equals (1)) {
+				GameObject.Find ("Pedido").GetComponent<Pedido> ().Beber ();
+			}
 			StartCoroutine ("Tomando");
 		}
 			
-		//Cambios al mover
-		if (AcY < -20000 && !moviendoYneg){
+		//Cambios al mover 20000 
+		if (AcY < -8000 && !moviendoYneg){
 			Debug.Log ("Moviendo Y Neg");
 			StartCoroutine ("MoviendoYneg");
 		}
 
-		if (AcY > 20000 && !moviendoYpos){
+		if (AcY > 8000 && !moviendoYpos){
 			Debug.Log ("Moviendo Y Pos");
 			StartCoroutine ("MoviendoYpos");
 		}
@@ -111,8 +118,9 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Vertido Izq");
-		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (1);
-		agitando = false;
+		if (Fase.Equals (2)) {
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (1);
+		}agitando = false;
 	}
 
 	IEnumerator VertiendoDer(){
@@ -121,8 +129,9 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Vertido Der");
-		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (0);
-		agitando = false;
+		if (Fase.Equals (2)) {
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (0);
+		}agitando = false;
 	}
 
 	IEnumerator Tomando(){
@@ -130,18 +139,26 @@ public class NewMedia : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		yield return new WaitForSeconds (1);
 		Debug.Log("Tomado");
-		GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (2);
-		tomando = false;
+		if (Fase.Equals (2)) {
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (2);
+		}
+			tomando = false;
 	}
 
 	IEnumerator MoviendoYneg(){
 		moviendoYneg = true;
+		if (Fase.Equals (1)) {
+			Izq = true;
+		}
 		yield return new WaitForSeconds (1);
 		moviendoYneg = false;
 	}
 
 	IEnumerator MoviendoYpos(){
 		moviendoYpos = true;
+		if(Fase.Equals(1))
+		{	
+			Der=true;}
 		yield return new WaitForSeconds (1);
 		moviendoYpos = false;
 	}
