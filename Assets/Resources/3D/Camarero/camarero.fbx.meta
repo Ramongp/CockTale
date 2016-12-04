@@ -1,0 +1,176 @@
+fileFormatVersion: 2
+guid: 654b8d837dbe3e64783683b74bb4325b
+timeCreated: 1479727482
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Arm_L
+    100002: Arm_R
+    100004: Bandeja
+    100006: Bow
+    100008: //RootNode
+    100010: Cresta
+    100012: Elbow
+    100014: Elbow.001
+    100016: Eyes
+    100018: Foot_L
+    100020: Foot_R
+    100022: Forearm
+    100024: Forearm.001
+    100026: Hand
+    100028: Hand.001
+    100030: Head
+    100032: Leg_L
+    100034: Leg_R
+    100036: Papada
+    100038: Pico
+    100040: Torso
+    400000: Arm_L
+    400002: Arm_R
+    400004: Bandeja
+    400006: Bow
+    400008: //RootNode
+    400010: Cresta
+    400012: Elbow
+    400014: Elbow.001
+    400016: Eyes
+    400018: Foot_L
+    400020: Foot_R
+    400022: Forearm
+    400024: Forearm.001
+    400026: Hand
+    400028: Hand.001
+    400030: Head
+    400032: Leg_L
+    400034: Leg_R
+    400036: Papada
+    400038: Pico
+    400040: Torso
+    2300000: Arm_L
+    2300002: Arm_R
+    2300004: Bandeja
+    2300006: Bow
+    2300008: //RootNode
+    2300010: Cresta
+    2300012: Elbow
+    2300014: Elbow.001
+    2300016: Eyes
+    2300018: Foot_L
+    2300020: Foot_R
+    2300022: Forearm
+    2300024: Forearm.001
+    2300026: Hand
+    2300028: Hand.001
+    2300030: Head
+    2300032: Leg_L
+    2300034: Leg_R
+    2300036: Papada
+    2300038: Pico
+    2300040: Torso
+    3300000: Arm_L
+    3300002: Arm_R
+    3300004: Bandeja
+    3300006: Bow
+    3300008: //RootNode
+    3300010: Cresta
+    3300012: Elbow
+    3300014: Elbow.001
+    3300016: Eyes
+    3300018: Foot_L
+    3300020: Foot_R
+    3300022: Forearm
+    3300024: Forearm.001
+    3300026: Hand
+    3300028: Hand.001
+    3300030: Head
+    3300032: Leg_L
+    3300034: Leg_R
+    3300036: Papada
+    3300038: Pico
+    3300040: Torso
+    4300000: Camarero
+    4300002: Torso
+    4300004: Head
+    4300006: Papada
+    4300008: Pico
+    4300010: Eyes
+    4300012: Cresta
+    4300014: Arm_L
+    4300016: Elbow
+    4300018: Forearm
+    4300020: Hand
+    4300022: Bandeja
+    4300024: Arm_R
+    4300026: Elbow.001
+    4300028: Forearm.001
+    4300030: Hand.001
+    4300032: Bow
+    4300034: Leg_L
+    4300036: Foot_L
+    4300038: Leg_R
+    4300040: Foot_R
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -17,7 +17,7 @@ public class CocteleraMove : MonoBehaviour {
 		Pos3 = 8;
 		PosVect= new int[] {Pos1,Pos2,Pos3};
 		Pos = 1;
-		Vel = 15;
+		Vel = 30;
 		Margen = 0.2f;
 	}
 	
@@ -27,7 +27,7 @@ public class CocteleraMove : MonoBehaviour {
 			if (NewMedia.Izq && Pos > 0) {
 				NewMedia.Izq = false;
 				NewMedia.Der = false;
-				Debug.Log ("Restando");
+				//Debug.Log ("Restando");
 				Pos--;
 				Moving = true;
 				//StartCoroutine ("Wait");
@@ -62,7 +62,7 @@ public class CocteleraMove : MonoBehaviour {
 
 
 	IEnumerator Wait(){
-		Debug.Log ("Waiting");
+		//Debug.Log ("Waiting");
 		yield return new WaitForSeconds (3);
 	}
 }

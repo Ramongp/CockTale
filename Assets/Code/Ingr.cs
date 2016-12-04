@@ -6,12 +6,13 @@ public class Ingr : MonoBehaviour {
 	// Use this for initialization
 	public Transform Ing;
 	public Transform IngHijo;
-	public GameObject Señuelo;
+	public GameObject Señuelo, IngCae, SeñueloCae;
 	public int Pos1X, Pos2X, Pos3X, Pos1Z, Pos2Z;
 	public int[] PosVect;
 	public GameObject[] Ings;
 	 public int i,PosIng;
-	public static bool parado;
+	public Animator Esfera;
+	public static bool parado,cayendo;
 	void Start () {
 		Pos1Z = 20;
 		Pos2Z = 0;
@@ -26,12 +27,12 @@ public class Ingr : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!parado){
+		if (!parado) {
 			if (Ing.position.z > Pos2Z) {
 				Ing.Translate (new Vector3 (0, 0, -10) * Time.deltaTime);
 				Señuelo.transform.position = new Vector3 (Ing.position.x, Señuelo.transform.position.y, Señuelo.transform.position.z);
 			} else {
-				Debug.Log("Mi posición: "+PosIng+" Posición Coctelera: "+GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos );
+				//Debug.Log("Mi posición: "+PosIng+" Posición Coctelera: "+GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos );
 				if (GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos == PosIng) {
 					Debug.Log ("Recogido ingrediente " + i);
 					if (GameObject.Find ("Pedido").GetComponent<Pedido> ().Corroborar (i)) {
@@ -40,21 +41,23 @@ public class Ingr : MonoBehaviour {
 					} else {
 						Destroy (Señuelo);
 					}
-				}else {
+				} else {
+					Esfera.SetBool ("Parar", true);
+					Ing.transform.Translate (new Vector3 (0, -20, 0) * Time.deltaTime);
 					CrearIngerd ();
-					}
+					//	StartCoroutine ("Wait");
+				}
 			}
 		}
 	}
 
-
 	public void CrearIngerd()
 	{
-		Debug.Log ("LLamo a crear Ingr");
+		//Debug.Log ("LLamo a crear Ingr");
 		PosIng = Random.Range (0, 2);
-	
 
 		Destroy (Señuelo);
+
 		//IngHijo =Ings[i];
 		i = Random.Range (0, Ings.Length);
 		//Transform prueba = IngHijo;
@@ -67,5 +70,10 @@ public class Ingr : MonoBehaviour {
 		Ing.position = new Vector3 (PosVect [PosIng], 0, Pos1Z);
 		//Señuelo.transform.position = new Vector3 (0, 0, 0);
 
+	}
+
+	IEnumerator Wait()
+	{
+		yield return new WaitForSeconds (3);
 	}
 }

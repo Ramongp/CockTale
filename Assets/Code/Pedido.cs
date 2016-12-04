@@ -7,17 +7,23 @@ using UnityStandardAssets.ImageEffects;
 public class Pedido : MonoBehaviour {
 
 	// Use this for initialization
-	public int borracho;
+	public int borracho, angulo;
 	public string[] IngNames;
 	public int[] Ings;
 	public int[] pedido;
 	public Text Ing1, Ing2,Ing3;
 	public Text[] Textos;
+	public float TimerBo;
+	public Transform camara, original;
+
 
 
 
 	void Start () {
+		angulo = 0;
 		borracho = 0;
+		TimerBo = 0;
+		original = camara;
 		IngNames = new string[]{"Alcohol","Berries","Ice Cubes","Lima","Mint"};
 		Ings= new int[]{0,1,2,3,4};
 		pedido= new int[]{0,0,0};
@@ -26,10 +32,18 @@ public class Pedido : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		Borrachera ();
-	}
+	void Update () 
+	{
+		if (TimerBo > 0) {
+			TimerBo -= Time.deltaTime;
+			camara.position = new Vector3(camara.position.x,3+Mathf.Sin(TimerBo*2)*0.25f,-10);
+			var angulos = original.eulerAngles;
+			angulos.z = Mathf.Sin (TimerBo*2)*5;
+			camara.rotation = Quaternion.Euler(angulos);
 
+		}
+		
+	}
 	void CrearPedido(){
 		int u, i, e;
 		u = Random.Range (0, Ings.Length);
@@ -101,7 +115,9 @@ public class Pedido : MonoBehaviour {
 		Ingr.parado = false;
 		if (borracho < 3) {
 			borracho++;
+			Borrachera ();
 			StartCoroutine ("Metabolizar");
+
 		}
 	}
 
@@ -111,7 +127,7 @@ public class Pedido : MonoBehaviour {
 
 		case 1:
 			GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = true;
-			GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().extraBlur = false;
+			GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().extraBlur = true;
 			break;
 
 		case 2:
@@ -120,15 +136,19 @@ public class Pedido : MonoBehaviour {
 
 		default:
 			GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().enabled = false;
+			GameObject.Find ("Main Camera").GetComponent<MotionBlur> ().extraBlur = false;
 			break;
 		}
 
 	}
 
 	IEnumerator Metabolizar(){
-
+		TimerBo = 8;
 		yield return new WaitForSeconds (8);
 		borracho--;
+		Borrachera ();
+		camara.position = new Vector3(camara.position.x,3,-10);
+		camara.rotation = original.rotation;
 	}
 
 }

@@ -8,7 +8,7 @@ public class NewMedia : MonoBehaviour {
 	public int Fase;
 
 	//Fase1 variables
-	public static bool Izq=false,Der=false;
+	public static bool Izq=false,Der=false, MidiendoMove =true;
 
 	//Objetos y variables
 
@@ -16,6 +16,8 @@ public class NewMedia : MonoBehaviour {
 	private bool tomando = false;
 	private bool moviendoYneg = false;
 	private bool moviendoYpos = false;
+	private bool moviendoZpos = false;
+	private bool moviendoZneg = false;
 
 	//Variables Arduino
 	public float AcX;
@@ -42,8 +44,14 @@ public class NewMedia : MonoBehaviour {
 	public float minGcY = 0f;
 	public float minGcZ = 0f;
 
+	void Start()
+	{
+		MidiendoMove = true;
+	}
+
 	void Update () {
 		//Medida de valores
+		//Debug.Log("MidiendoMove: " + MidiendoMove + ". Fase: " + Fase);
 		GcX = Convert.ToInt16 (ArduinoInput.Datos [3]);
 		GcY = Convert.ToInt16 (ArduinoInput.Datos [4]);
 		GcZ = Convert.ToInt16 (ArduinoInput.Datos [5]);
@@ -80,86 +88,134 @@ public class NewMedia : MonoBehaviour {
 		if (GcZ < minGcZ)
 			minGcZ = GcZ;
 		
-		//Cambios al agitar
-		if (GcX < -32700 && !agitando && !tomando) {
-			Debug.Log ("VERTIENDO IZQ");
-			StartCoroutine ("VertiendoIzq");
-		}
-
-		if (GcX > 32700 && !agitando && !tomando) {
-			Debug.Log ("VERTIENDO DER");
-			StartCoroutine ("VertiendoDer");
-		}
-
-		if (GcY > 32700 && !tomando && !agitando) {
-			Debug.Log ("TOMANDO");
-			if (Fase.Equals (1)) {
-				GameObject.Find ("Pedido").GetComponent<Pedido> ().Beber ();
+		//Cambios al mover 
+		if (Fase.Equals (1) || MidiendoMove) {
+			if (AcY > 8000 && !moviendoYpos) { //IZQUIERDA
+				MidiendoMove = false;
+				Debug.Log ("Moviendo Y Pos");
+				StartCoroutine ("MoviendoYpos");
 			}
-			StartCoroutine ("Tomando");
-		}
-			
-		//Cambios al mover 20000 
-		if (AcY < -8000 && !moviendoYneg){
-			Debug.Log ("Moviendo Y Neg");
-			StartCoroutine ("MoviendoYneg");
-		}
+		
+			if (AcY < -8000 && !moviendoYneg) { //DERECHA
+				MidiendoMove = false;
+				Debug.Log ("Moviendo Y Neg");
+				StartCoroutine ("MoviendoYneg");
+			}
+		
+			if (AcZ > 8000 && !moviendoZpos) { //ARRIBA
+				MidiendoMove = false;
+				Debug.Log ("Moviendo Z Pos");
+				StartCoroutine ("MoviendoZpos");
+			}
+		
+			if (AcZ < -20000 && !moviendoZneg) { // ABAJO
+				MidiendoMove = false;
+				Debug.Log ("Moviendo Z Pos");
+				StartCoroutine ("MoviendoZneg");
+			}
+			//Cambios al girar
+			if (GcX < -32700 && !agitando && !tomando) { //IZQUIERDA
+				MidiendoMove = false;
+				Debug.Log ("VERTIENDO IZQ");
+				StartCoroutine ("VertiendoIzq");
+			}
 
-		if (AcY > 8000 && !moviendoYpos){
-			Debug.Log ("Moviendo Y Pos");
-			StartCoroutine ("MoviendoYpos");
-		}
+			if (GcX > 32700 && !agitando && !tomando) { //DERECHA
+				MidiendoMove = false;
+				Debug.Log ("VERTIENDO DER");
+				StartCoroutine ("VertiendoDer");
+			}
 
+			if (GcY < -32700 && !tomando && !agitando) { //ADELANTE
+				MidiendoMove = false;
+				Debug.Log ("TIRANDO");
+				StartCoroutine ("Tirando");
+			}
+		
+			if (GcY > 32700 && !tomando && !agitando) { //ATRÁS
+				MidiendoMove = false;
+				Debug.Log ("TOMANDO");
+				if (Fase.Equals (1)) {
+					GameObject.Find ("Pedido").GetComponent<Pedido> ().Beber ();
+				}
+				StartCoroutine ("Tomando");
+			}
+		}
+		
 	}
 
-	IEnumerator VertiendoIzq(){
-		agitando = true;
-		yield return new WaitForSeconds (1);
-		yield return new WaitForSeconds (1);
-		yield return new WaitForSeconds (1);
-		Debug.Log("Vertido Izq");
-		if (Fase.Equals (2)) {
-			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (1);
-		}agitando = false;
-	}
+	//Movimientos
 
-	IEnumerator VertiendoDer(){
-		agitando = true;
-		yield return new WaitForSeconds (1);
-		yield return new WaitForSeconds (1);
-		yield return new WaitForSeconds (1);
-		Debug.Log("Vertido Der");
-		if (Fase.Equals (2)) {
-			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (0);
-		}agitando = false;
-	}
-
-	IEnumerator Tomando(){
-		tomando = true;
-		yield return new WaitForSeconds (1);
-		yield return new WaitForSeconds (1);
-		Debug.Log("Tomado");
-		if (Fase.Equals (2)) {
-			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (2);
-		}
-			tomando = false;
-	}
-
-	IEnumerator MoviendoYneg(){
-		moviendoYneg = true;
-		if (Fase.Equals (1)) {
-			Izq = true;
-		}
-		yield return new WaitForSeconds (1);
-		moviendoYneg = false;
-	}
-
-	IEnumerator MoviendoYpos(){
+	IEnumerator MoviendoYpos(){ //MOVER IZQUIERDA
 		moviendoYpos = true;
 		if(Fase.Equals(1))
-		{	
-			Der=true;}
+			Der=true;
 		yield return new WaitForSeconds (1);
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (1);
 		moviendoYpos = false;
+	}
+	
+	IEnumerator MoviendoYneg(){ //MOVER DERECHA
+		moviendoYneg = true;
+		if (Fase.Equals (1))
+			Izq = true;
+		yield return new WaitForSeconds (1);
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (0);
+		moviendoYneg = false;
+	}
+	
+	IEnumerator MoviendoZpos(){ //MOVER ARRIBA
+		moviendoZpos = true;
+		yield return new WaitForSeconds (1);
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (2);
+		moviendoZpos = false;
+	}
+	
+	IEnumerator MoviendoZneg(){ //MOVER ABAJO
+		moviendoZneg = true;
+		yield return new WaitForSeconds (1);
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (3);
+		moviendoZneg = false;
+	}
+	
+	//Giros
+	IEnumerator VertiendoIzq(){ //GIRO IZQUIERDA
+		agitando = true;
+		yield return new WaitForSeconds (2);
+		Debug.Log("Vertido Izq");
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (4);
+		agitando = false;
+	}
+
+	IEnumerator VertiendoDer(){ //GIRO DERECHA
+		agitando = true;
+		yield return new WaitForSeconds (2);
+		Debug.Log("Vertido Der");
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (5);
+		agitando = false;
+	}
+
+	IEnumerator Tirando(){ //GIRO ADELANTE
+		tomando = true;
+		yield return new WaitForSeconds (2);
+		Debug.Log("Tirando");
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (6);
+		tomando = false;
+	}
+	
+	IEnumerator Tomando(){ //GIRO ATRÁS
+		tomando = true;
+		yield return new WaitForSeconds (2);
+		Debug.Log("Tomado");
+		if (Fase.Equals (2))
+			GameObject.Find ("Main Camera").GetComponent<Mixing> ().Comprobar (7);
+		tomando = false;
 	}
 }
