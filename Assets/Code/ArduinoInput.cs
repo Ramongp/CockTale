@@ -21,6 +21,7 @@ public class ArduinoInput : MonoBehaviour{
 	public static string[] Datos;
 
 	void Start () {
+		DontDestroyOnLoad (this.gameObject);
 		string[] ports = SerialPort.GetPortNames ();
 
 		if (ports.Length > 0) {
