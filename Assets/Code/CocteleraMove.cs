@@ -3,7 +3,6 @@ using System.Collections;
 
 public class CocteleraMove : MonoBehaviour {
 
-
 	public int Pos1, Pos2, Pos3, Pos, Vel;
 	public int[] PosVect;
 	public Transform Coct;
@@ -48,6 +47,7 @@ public class CocteleraMove : MonoBehaviour {
 				NewMedia.Izq = false;
 				NewMedia.Der = false;
 			} else {
+				Coct.GetComponent<AudioSource> ().Play ();
 				if (Coct.position.x <= PosVect [Pos]) {
 					Coct.Translate (Vector3.right * Time.deltaTime * Vel);
 				} else {

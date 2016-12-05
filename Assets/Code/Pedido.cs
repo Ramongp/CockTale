@@ -19,6 +19,9 @@ public class Pedido : MonoBehaviour {
 	public Sprite[] IngSprites; 
 	public int[] Cogidos;
 
+	public AudioClip audio1;
+	public AudioClip audio2;
+
 
 
 	void Start () {
@@ -86,6 +89,8 @@ public class Pedido : MonoBehaviour {
 				Cogidos [i] = 1;
 			//	Debug.Log ("pos " + i + " Recogido " + p + " Ing " + pedido [i]); 
 				IngPant[i].color = Color.green;
+				camara.GetComponent<AudioSource>().clip = audio2;
+				camara.GetComponent<AudioSource> ().Play ();
 				bien = true;
 			}
 
@@ -107,6 +112,7 @@ public class Pedido : MonoBehaviour {
 
 				//meter puntuacion
 				//CrearPedido();  //Pasar a la siguiente escena
+
 			Application.LoadLevel("Mezclar");
 
 			}
@@ -117,6 +123,8 @@ public class Pedido : MonoBehaviour {
 	public void Beber()
 	{
 		Debug.Log ("Has bebido");
+		camara.GetComponent<AudioSource>().clip = audio1;
+		camara.GetComponent<AudioSource> ().Play ();
 		CrearPedido ();
 		GameObject.Find ("Main Camera").GetComponent<Ingr> ().CrearIngerd ();
 		Ingr.parado = false;
