@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+<<<<<<< HEAD
 using UnityEngine.UI;
+=======
+>>>>>>> refs/remotes/origin/Jose
 using System.Collections.Generic;
 
 public class Ingr : MonoBehaviour {
@@ -12,6 +15,7 @@ public class Ingr : MonoBehaviour {
 	public int Pos1X, Pos2X, Pos3X, Pos1Z, Pos2Z, contRandom;
 	public int[] PosVect;
 	public GameObject[] Ings;
+<<<<<<< HEAD
 	public int i,PosIng;
 	public GameObject Bebe;
 	public Text NombreHuevo;
@@ -35,11 +39,13 @@ public class Ingr : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!parado) {
+
 			Bebe.SetActive (false);
 			if (Ing.position.z > Pos2Z) {
 				Ing.Translate (new Vector3 (0, 0, -10) * Time.deltaTime);
 				Señuelo.transform.position = new Vector3 (Ing.position.x, 0, Señuelo.transform.position.z);
 			} else {
+
 				Debug.Log ("Mi posición: " + PosIng + " Posición Coctelera: " + GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos);
 				if (GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos == PosIng) {
 					//	Debug.Log ("Recogido ingrediente " + i);
@@ -59,9 +65,11 @@ public class Ingr : MonoBehaviour {
 				}
 			}
 		}
+
 		else {
 			Bebe.SetActive (true);
 		}
+
 	}
 
 	public void CrearIngerd()

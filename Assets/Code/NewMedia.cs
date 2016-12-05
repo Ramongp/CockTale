@@ -8,6 +8,16 @@ public class NewMedia : MonoBehaviour {
 	//Booleano entre fases
 	public int Fase;
 
+
+	//Fase1 variables
+	public static bool Izq=false,Der=false, MidiendoMove =true;
+
+	//Fase3 variables
+	public Transform Cubo; 
+	public Slider Cantidad;
+	public Image Fondo;
+
+
 	//Fase1 variables
 	public static bool Izq=false,Der=false, MidiendoMove =true;
 
@@ -50,6 +60,11 @@ public class NewMedia : MonoBehaviour {
 	public float minGcY = 0f;
 	public float minGcZ = 0f;
 
+
+	public AudioClip audio1;
+	public AudioClip audio2;
+
+
 	void Start()
 	{
 		MidiendoMove = true;
@@ -58,8 +73,10 @@ public class NewMedia : MonoBehaviour {
 			Cubo = GameObject.Find("cocteleraPrefab").transform; 
 			Cantidad = GameObject.Find ("Cantidad").GetComponent<Slider>();
 			Fondo = GameObject.Find ("FondoSlider").GetComponent<Image> ();
+
 			Liquido = GameObject.Find ("Liquido");
 			Liquido.transform.localScale = new Vector3 (0, 0, 0);
+
 		}
 	}
 
@@ -90,22 +107,41 @@ public class NewMedia : MonoBehaviour {
 					if (Cubo.localEulerAngles.z > 50 && Cubo.localEulerAngles.z < 80) {
 						Cantidad.value -= Time.deltaTime * 0.2f;
 						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
+
+						//Cubo.GetComponent<AudioSource> ().Stop ();
+						//Cubo.GetComponent<AudioSource> ().clip = null;
+						if (!Cubo.GetComponent<AudioSource> ().clip == audio1) {
+							Cubo.GetComponent<AudioSource>().clip = audio1;
+							Cubo.GetComponent<AudioSource> ().Play ();
+						}
 						Fondo.color = Color.blue;
 						Liquido.transform.localScale = new Vector3 (Liquido.transform.localScale.x + Time.deltaTime * 0.15f, Liquido.transform.localScale.y + Time.deltaTime * 0.15f, Liquido.transform.localScale.z + Time.deltaTime * 0.15f);
 						//Ganas Dinero
 						Puntuacion.Punt+=Time.deltaTime * 0.2f;
 						//Debug.Log ("Entra");
-					}
-					else {
+					} else {
+
 						
 					
 					
 						if (Cubo.localEulerAngles.z > 80 && Cubo.localEulerAngles.z < 100) {
-							//Debug.Log ("Losing Money");
+
+							//Debug.Log (Cubo.GetComponent<AudioSource> ().clip.name);
+							//Cubo.GetComponent<AudioSource> ().Stop ();
+							//Cubo.GetComponent<AudioSource> ().clip = null;
+							if (!Cubo.GetComponent<AudioSource> ().clip == audio2) {
+								Cubo.GetComponent<AudioSource>().clip = audio2;
+								Cubo.GetComponent<AudioSource> ().Play ();
+							}
+
 							Fondo.color = Color.red;
 							Cantidad.value -= Time.deltaTime * 0.25f;
 						}
 						else {
+
+							Cubo.GetComponent<AudioSource> ().Stop ();
+							Cubo.GetComponent<AudioSource> ().clip = null;
+
 							Fondo.color = Color.green;
 						}
 					}
@@ -115,19 +151,39 @@ public class NewMedia : MonoBehaviour {
 				else {
 					if (Cubo.localEulerAngles.z > 80 && Cubo.localEulerAngles.z < 100) {
 						Cantidad.value -= Time.deltaTime * 0.2f;
+
+						//Cubo.GetComponent<AudioSource> ().Stop ();
+						//Cubo.GetComponent<AudioSource> ().clip = null;
+						if (!Cubo.GetComponent<AudioSource> ().clip == audio1) {
+							Cubo.GetComponent<AudioSource>().clip = audio1;
+							Cubo.GetComponent<AudioSource> ().Play ();
+						}
 						Fondo.color = Color.blue;
 						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
 						Liquido.transform.localScale = new Vector3 (Liquido.transform.localScale.x + Time.deltaTime * 0.15f, Liquido.transform.localScale.y + Time.deltaTime * 0.15f, Liquido.transform.localScale.z + Time.deltaTime * 0.15f);
+
 						//Debug.Log ("Entra");
 					} else {
 						
 						if (Cubo.localEulerAngles.z > 100 && Cubo.localEulerAngles.z < 300) {
 							//Debug.Log ("Losing Money");
+
+							//Cubo.GetComponent<AudioSource> ().Stop ();
+							//Cubo.GetComponent<AudioSource> ().clip = null;
+							if (!Cubo.GetComponent<AudioSource> ().clip == audio2) {
+								Cubo.GetComponent<AudioSource>().clip = audio2;
+								Cubo.GetComponent<AudioSource> ().Play ();
+							}
+
 							Fondo.color = Color.red;
 							Cantidad.value -= Time.deltaTime * 0.25f;
 						}
 
 					else {
+
+							Cubo.GetComponent<AudioSource> ().Stop ();
+							Cubo.GetComponent<AudioSource> ().clip = null;
+
 							Fondo.color = Color.green;
 						}
 

@@ -13,7 +13,9 @@ public class EggNameBehaviour : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Return)) 
 		{
+
 			Puntuacion.Name = nameEditor.text;
+
 			Application.LoadLevel ("CocteleraMove");
 		}
 	}

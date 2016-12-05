@@ -22,6 +22,7 @@ public class Pulsa : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		if (GameObject.Find("Main Camera").GetComponent<NewMedia>().AcZ>11000 || Input.GetKeyDown(KeyCode.Return)) {
 			Play ();
 		}

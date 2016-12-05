@@ -7,14 +7,17 @@ public class EndingBehaviour : MonoBehaviour {
 
 	[SerializeField] List<GameObject> incomes;
 	[SerializeField] Text eggName;
+
 	public int score;
 	int cont = 1;
 	float timer;
 	float timeBetweenScore = 1f;
 
 	void Start () {
+
 		eggName.text = Puntuacion.Name;
 		score = (int) Puntuacion.Punt;
+
 		incomes [6].transform.GetChild (0).GetComponent<Text> ().text = score.ToString ();
 	}
 	
