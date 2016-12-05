@@ -65,8 +65,11 @@ public class Mixing : MonoBehaviour {
 	6 = GIRAR ADELANTE
 	7 = GIRAR ATRÁS
 	*/
-		if (actualPos [pos] == checking)
+		if (actualPos [pos] == checking) {
 			moves [pos].color = Color.green;
+			//Ganas Dinero
+			Puntuacion.Punt += 5;
+		}
 		else
 			moves [pos].color = Color.red;
 		pos++;

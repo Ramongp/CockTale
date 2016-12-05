@@ -15,7 +15,7 @@ public class NewMedia : MonoBehaviour {
 	public Transform Cubo; 
 	public Slider Cantidad;
 	public Image Fondo;
-
+	public GameObject Liquido;
 	//Objetos y variables
 
 	private bool agitando = false;
@@ -58,6 +58,8 @@ public class NewMedia : MonoBehaviour {
 			Cubo = GameObject.Find("cocteleraPrefab").transform; 
 			Cantidad = GameObject.Find ("Cantidad").GetComponent<Slider>();
 			Fondo = GameObject.Find ("FondoSlider").GetComponent<Image> ();
+			Liquido = GameObject.Find ("Liquido");
+			Liquido.transform.localScale = new Vector3 (0, 0, 0);
 		}
 	}
 
@@ -89,8 +91,12 @@ public class NewMedia : MonoBehaviour {
 						Cantidad.value -= Time.deltaTime * 0.2f;
 						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
 						Fondo.color = Color.blue;
+						Liquido.transform.localScale = new Vector3 (Liquido.transform.localScale.x + Time.deltaTime * 0.15f, Liquido.transform.localScale.y + Time.deltaTime * 0.15f, Liquido.transform.localScale.z + Time.deltaTime * 0.15f);
+						//Ganas Dinero
+						Puntuacion.Punt+=Time.deltaTime * 0.2f;
 						//Debug.Log ("Entra");
-					} else {
+					}
+					else {
 						
 					
 					
@@ -111,6 +117,7 @@ public class NewMedia : MonoBehaviour {
 						Cantidad.value -= Time.deltaTime * 0.2f;
 						Fondo.color = Color.blue;
 						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
+						Liquido.transform.localScale = new Vector3 (Liquido.transform.localScale.x + Time.deltaTime * 0.15f, Liquido.transform.localScale.y + Time.deltaTime * 0.15f, Liquido.transform.localScale.z + Time.deltaTime * 0.15f);
 						//Debug.Log ("Entra");
 					} else {
 						

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Ingr : MonoBehaviour {
@@ -11,10 +12,14 @@ public class Ingr : MonoBehaviour {
 	public int Pos1X, Pos2X, Pos3X, Pos1Z, Pos2Z, contRandom;
 	public int[] PosVect;
 	public GameObject[] Ings;
-	 public int i,PosIng;
+	public int i,PosIng;
+	public GameObject Bebe;
+	public Text NombreHuevo;
+
 	public Animator Esfera;
 	public static bool parado,cayendo;
 	void Start () {
+		NombreHuevo.text = Puntuacion.Name;
 		contRandom = 0;
 		Pos1Z = 20;
 		Pos2Z = 0;
@@ -30,14 +35,17 @@ public class Ingr : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!parado) {
+			Bebe.SetActive (false);
 			if (Ing.position.z > Pos2Z) {
 				Ing.Translate (new Vector3 (0, 0, -10) * Time.deltaTime);
 				Señuelo.transform.position = new Vector3 (Ing.position.x, 0, Señuelo.transform.position.z);
 			} else {
-				Debug.Log("Mi posición: "+PosIng+" Posición Coctelera: "+GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos );
+				Debug.Log ("Mi posición: " + PosIng + " Posición Coctelera: " + GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos);
 				if (GameObject.Find ("Main Camera").GetComponent<CocteleraMove> ().Pos == PosIng) {
-				//	Debug.Log ("Recogido ingrediente " + i);
+					//	Debug.Log ("Recogido ingrediente " + i);
 					if (GameObject.Find ("Pedido").GetComponent<Pedido> ().Corroborar (i)) {
+						//Ganar Dinero
+						Puntuacion.Punt += 5;
 						CrearIngerd ();
 
 					} else {
@@ -50,6 +58,9 @@ public class Ingr : MonoBehaviour {
 					//	StartCoroutine ("Wait");
 				}
 			}
+		}
+		else {
+			Bebe.SetActive (true);
 		}
 	}
 
