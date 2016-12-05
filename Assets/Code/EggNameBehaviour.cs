@@ -11,6 +11,9 @@ public class EggNameBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
-		
+		if (Input.GetKeyDown (KeyCode.Return)) 
+		{
+			Application.LoadLevel ("CocteleraMove");
+		}
 	}
 }

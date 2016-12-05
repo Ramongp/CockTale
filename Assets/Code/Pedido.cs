@@ -11,11 +11,13 @@ public class Pedido : MonoBehaviour {
 	public string[] IngNames;
 	public int[] Ings;
 	public int[] pedido;
-	public Text Ing1, Ing2,Ing3;
-	public Text[] Textos;
+	public Image Ing1, Ing2,Ing3;
+	public Sprite[] IngsIm;
+	public Image[] IngPant;
 	public float TimerBo;
 	public Transform camara, original;
-
+	public Sprite[] IngSprites; 
+	public int[] Cogidos;
 
 
 
@@ -24,10 +26,11 @@ public class Pedido : MonoBehaviour {
 		borracho = 0;
 		TimerBo = 0;
 		original = camara;
+		IngPant = new Image[]{ Ing1, Ing2, Ing3 };
 		IngNames = new string[]{"Alcohol","Berries","Ice Cubes","Lima","Mint"};
 		Ings= new int[]{0,1,2,3,4};
 		pedido= new int[]{0,0,0};
-		Textos= new Text[]{Ing1,Ing2,Ing3};
+		Cogidos= new int[]{0,0,0};
 		CrearPedido ();
 	}
 	
@@ -45,6 +48,9 @@ public class Pedido : MonoBehaviour {
 		
 	}
 	void CrearPedido(){
+
+		Cogidos= new int[]{0,0,0};
+
 		int u, i, e;
 		u = Random.Range (0, Ings.Length);
 		i = Random.Range (0, Ings.Length);
@@ -57,18 +63,18 @@ public class Pedido : MonoBehaviour {
 			e = Random.Range (0, Ings.Length);
 		}
 
-		foreach(Text t in Textos){
-			t.color = Color.black;
+		foreach(Image t in IngPant){
+			t.color = Color.white;
 		}
 
 		pedido [0] = Ings [u];
-		Ing1.text = IngNames [u];
+		Ing1.sprite = IngsIm [u];
 
 		pedido [1] = Ings [i];
-		Ing2.text = IngNames [i];
+		Ing2.sprite = IngsIm [i];
 
 		pedido [2] = Ings [e];
-		Ing3.text = IngNames [e];
+		Ing3.sprite = IngsIm [e];
 
 		Debug.Log ("Pedido: " + u + " "+IngNames [u]+ " " + i + " "+IngNames [i] + " " +IngNames [e]+ " "+ e);
 	}
@@ -77,22 +83,23 @@ public class Pedido : MonoBehaviour {
 		bool bien = false;
 		for (int i = 0; i < pedido.Length; i++) {
 			if (p == pedido [i]) {
-				Debug.Log ("pos " + i + " Recogido " + p + " Ing " + pedido [i]); 
-				Textos[i].color = Color.green;
+				Cogidos [i] = 1;
+			//	Debug.Log ("pos " + i + " Recogido " + p + " Ing " + pedido [i]); 
+				IngPant[i].color = Color.green;
 				bien = true;
 			}
 
 			}
 		if (!bien) {
 			Ingr.parado = true;
-			foreach(Text t in Textos){
+			foreach(Image t in IngPant){
 				t.color = Color.red;
 			}
-			Debug.Log ("Parado");
+			//Debug.Log ("Parado");
 		}
 		bool nuevopedido = true;
-		for (int i = 0; i < Textos.Length; i++) {
-			if (Textos [i].color != Color.green) {
+		for (int i = 0; i < IngPant.Length; i++) {
+			if (IngPant[i].color != Color.green) {
 				nuevopedido = false;
 			}
 		}
@@ -150,5 +157,17 @@ public class Pedido : MonoBehaviour {
 		camara.position = new Vector3(camara.position.x,3,-10);
 		camara.rotation = original.rotation;
 	}
+
+	public bool CorroborarRandom(int p){
+		bool bien = false;
+		for (int i = 0; i < pedido.Length; i++) {
+			if (p == pedido [i] && Cogidos [i].Equals (0)) {
+				bien = true;
+			}
+		}
+		Debug.Log(bien.ToString());
+		return bien;
+	}
+
 
 }

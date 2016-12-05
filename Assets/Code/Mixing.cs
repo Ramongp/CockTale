@@ -71,5 +71,8 @@ public class Mixing : MonoBehaviour {
 			moves [pos].color = Color.red;
 		pos++;
 		NewMedia.MidiendoMove = true;
+
+		if(pos == 3)
+			Application.LoadLevel ("Fase3");
 	}
 }

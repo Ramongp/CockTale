@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Globalization;
 using System;
+using UnityEngine.UI;
 
 public class NewMedia : MonoBehaviour {
 	//Booleano entre fases
@@ -9,6 +10,11 @@ public class NewMedia : MonoBehaviour {
 
 	//Fase1 variables
 	public static bool Izq=false,Der=false, MidiendoMove =true;
+
+	//Fase3 variables
+	public Transform Cubo; 
+	public Slider Cantidad;
+	public Image Fondo;
 
 	//Objetos y variables
 
@@ -47,6 +53,12 @@ public class NewMedia : MonoBehaviour {
 	void Start()
 	{
 		MidiendoMove = true;
+
+		if (Fase.Equals (3)) {
+			Cubo = GameObject.Find("cocteleraPrefab").transform; 
+			Cantidad = GameObject.Find ("Cantidad").GetComponent<Slider>();
+			Fondo = GameObject.Find ("FondoSlider").GetComponent<Image> ();
+		}
 	}
 
 	void Update () {
@@ -59,6 +71,69 @@ public class NewMedia : MonoBehaviour {
 		AcX = Convert.ToInt16 (ArduinoInput.Datos [0]);
 		AcY = Convert.ToInt16 (ArduinoInput.Datos [1]);
 		AcZ = Convert.ToInt16 (ArduinoInput.Datos [2]);
+
+		//Fase3
+		if (Fase.Equals (3)) {
+			var angulos = Cubo.eulerAngles;
+			if (AcZ < -8500) {
+				angulos.z = 0;
+				Cubo.rotation = Quaternion.Euler (angulos);
+			}
+			else {
+				angulos.z = AcZ / 87 + 90;
+				Cubo.rotation = Quaternion.Euler (angulos);
+
+				if (Cantidad.value > 0.5) {
+					
+					if (Cubo.localEulerAngles.z > 50 && Cubo.localEulerAngles.z < 80) {
+						Cantidad.value -= Time.deltaTime * 0.2f;
+						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
+						Fondo.color = Color.blue;
+						//Debug.Log ("Entra");
+					} else {
+						
+					
+					
+						if (Cubo.localEulerAngles.z > 80 && Cubo.localEulerAngles.z < 100) {
+							//Debug.Log ("Losing Money");
+							Fondo.color = Color.red;
+							Cantidad.value -= Time.deltaTime * 0.25f;
+						}
+						else {
+							Fondo.color = Color.green;
+						}
+					}
+				}
+
+
+				else {
+					if (Cubo.localEulerAngles.z > 80 && Cubo.localEulerAngles.z < 100) {
+						Cantidad.value -= Time.deltaTime * 0.2f;
+						Fondo.color = Color.blue;
+						Cubo.Translate (Vector3.right * Time.deltaTime * 0.5f);
+						//Debug.Log ("Entra");
+					} else {
+						
+						if (Cubo.localEulerAngles.z > 100 && Cubo.localEulerAngles.z < 300) {
+							//Debug.Log ("Losing Money");
+							Fondo.color = Color.red;
+							Cantidad.value -= Time.deltaTime * 0.25f;
+						}
+
+					else {
+							Fondo.color = Color.green;
+						}
+
+					}
+
+				}
+				if (Cantidad.value.Equals (0)) {
+					Application.LoadLevel ("CocteleraMove");
+				}
+
+			}
+				
+		}
 
 		//Máximos
 		if (AcX > maxAcX)
@@ -136,7 +211,9 @@ public class NewMedia : MonoBehaviour {
 				MidiendoMove = false;
 				Debug.Log ("TOMANDO");
 				if (Fase.Equals (1)) {
-					GameObject.Find ("Pedido").GetComponent<Pedido> ().Beber ();
+					if (Ingr.parado) {
+						GameObject.Find ("Pedido").GetComponent<Pedido> ().Beber ();
+					}
 				}
 				StartCoroutine ("Tomando");
 			}

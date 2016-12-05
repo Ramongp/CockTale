@@ -12,9 +12,9 @@ public class CocteleraMove : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Pos1 = -8;
+		Pos1 = -10;
 		Pos2 = 0;
-		Pos3 = 8;
+		Pos3 = 10;
 		PosVect= new int[] {Pos1,Pos2,Pos3};
 		Pos = 1;
 		Vel = 30;

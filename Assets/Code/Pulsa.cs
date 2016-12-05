@@ -22,7 +22,10 @@ public class Pulsa : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (GameObject.Find("Main Camera").GetComponent<NewMedia>().AcZ>11000) {
+			Play ();
+		}
+
 		rT.anchoredPosition = originalPosition + new Vector2 (0f, Mathf.Sin (Time.realtimeSinceStartup*2.4f)*5f);
 		text.color = Color.Lerp (text.color, new Color (1f, 1f, 1f, Mathf.Abs(Mathf.Sin (Time.realtimeSinceStartup))), Time.deltaTime*5f);
 
@@ -34,7 +37,7 @@ public class Pulsa : MonoBehaviour {
 
 			fade.color = Color.Lerp(fade.color, new Color(0f, 0f, 0f, 1.1f), Time.deltaTime*5f);
 			if (fade.color.a >= 1f) {
-				Application.LoadLevel ("NOMBRE ESCENA JUGAR");
+				Application.LoadLevel ("EggNameScene");
 			}
 
 		}
